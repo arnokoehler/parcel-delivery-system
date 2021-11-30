@@ -5,7 +5,7 @@ import java.util.UUID
 
 data class Parcel(
     val id: UUID,
-    val receipient: Receipient,
+    val receipient: Receipient?, // TODO fix repo so this can be always filled
     val weight: Float,
     val value: BigDecimal
 )
