@@ -5,10 +5,10 @@ import java.util.UUID
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.support.TransactionTemplate
 
-@DataJpaTest
+@SpringBootTest
 internal class ParcelRepositoryIT {
 
     @Autowired private lateinit var transactionTemplate: TransactionTemplate
@@ -36,8 +36,15 @@ internal class ParcelRepositoryIT {
         }
 
         val parcel = parcelRepository.findBy(id)!!
+
         assertThat(parcel.id).isEqualTo(id)
-        assertThat(parcel.weight).isEqualTo(0.22f)
-        assertThat(parcel.value).isEqualTo(BigDecimal.valueOf(22))
+        assertThat(parcel.weight.toString()).isEqualTo("0.22")
+        assertThat(parcel.value.toString()).isEqualTo("22.00")
+        assertThat(parcel.receipient).isNotNull
+        assertThat(parcel.receipient!!.name).isEqualTo("Test Tester")
+        assertThat(parcel.receipient!!.address.city).isEqualTo("Testdorp")
+        assertThat(parcel.receipient!!.address.street).isEqualTo("Teststraat")
+        assertThat(parcel.receipient!!.address.postalCode).isEqualTo("2345HL")
+        assertThat(parcel.receipient!!.address.houseNumber).isEqualTo(33)
     }
 }

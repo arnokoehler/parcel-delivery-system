@@ -10,53 +10,56 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 class ParcelRepository {
 
+    private val parcelWithReceipient = (ParcelTable leftJoin ReceipientTable)
+
     fun insert(parcel: Parcel) {
+        parcel.receipient?.let { insertReicpient(parcel.receipient) }
         ParcelTable.insert {
             it[id] = parcel.id
             it[receipientId] = parcel.receipient?.id
             it[weight] = parcel.weight
             it[value] = parcel.value
         }
-        parcel.receipient?.let { insertReicpient(parcel.receipient) }
     }
 
     private fun insertReicpient(receipient: Receipient) {
         ReceipientTable.insert {
+            it[name] = receipient.name
             it[id] = receipient.id
             it[street] = receipient.address.street
             it[houseNumber] = receipient.address.houseNumber
+            it[postalCode] = receipient.address.postalCode
             it[city] = receipient.address.city
         }
     }
 
     @Transactional(readOnly = true)
     fun findBy(id: UUID): Parcel? {
-        val parcel = ParcelTable.select {
+        val parcel = parcelWithReceipient.select {
             ParcelTable.id eq id
         }
-            .map { it.toParcel() }
+            .map {
+                val resultParcel = it.toParcel()
+                resultParcel.copy(receipient = it.toReceipient())
+            }
             .singleOrNull()
 
-        return parcel?.let {
-            ReceipientTable.select {
-                ReceipientTable.id eq it.receipient?.id
-            }.map { it.toReceipient() }
-                .map { parcel.copy(receipient = it) }
-                .singleOrNull()
-        }
+        return parcel
     }
 }
 
-private fun ResultRow.toReceipient() = Receipient(
-    id = this[ReceipientTable.id].value,
-    name = this[ReceipientTable.name],
-    address = Address(
-        street = this[ReceipientTable.street],
-        houseNumber = this[ReceipientTable.houseNumber],
-        postalCode = this[ReceipientTable.postalCode],
-        city = this[ReceipientTable.city]
+private fun ResultRow.toReceipient(): Receipient? = getOrNull(ReceipientTable.id)?.let {
+    Receipient(
+        id = this[ReceipientTable.id].value,
+        name = this[ReceipientTable.name],
+        address = Address(
+            street = this[ReceipientTable.street],
+            houseNumber = this[ReceipientTable.houseNumber],
+            postalCode = this[ReceipientTable.postalCode],
+            city = this[ReceipientTable.city]
+        )
     )
-)
+}
 
 private fun ResultRow.toParcel() = Parcel(
     id = this[ParcelTable.id].value,
@@ -64,4 +67,3 @@ private fun ResultRow.toParcel() = Parcel(
     weight = this[ParcelTable.weight],
     value = this[ParcelTable.value]
 )
-
