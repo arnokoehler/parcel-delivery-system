@@ -14,6 +14,7 @@
         <h2.version>1.4.200</h2.version>
         <exposed.version>0.36.1</exposed.version>
         <spring-boot.version>2.6.1</spring-boot.version>
+        <jackson-module-kotlin.version>2.13.0</jackson-module-kotlin.version>
     </properties>
 
     <dependencies>
@@ -36,6 +37,12 @@
             <groupId>org.jetbrains.exposed</groupId>
             <artifactId>exposed-java-time</artifactId>
             <version>${exposed.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-kotlin</artifactId>
+            <version>${jackson-module-kotlin.version}</version>
         </dependency>
 
         <dependency>
@@ -64,6 +71,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
             <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>

@@ -18,12 +18,13 @@ class ParcelResource(
     private val parcelService: ParcelService
 ) {
 
-    @GetMapping("/payments/{id}")
-    fun getPayment(@PathVariable("id") id: UUID): ResponseEntity<ParcelResponse> {
-        val parcel = parcelService.getParcel(id)
-        val handlingDepartment = parcelService.getHandlingDepartment(parcel)
-        return parcel.toParcelResponse(handlingDepartment).nullTo404()
-    }
+    @GetMapping("/{id}")
+    fun getPayment(@PathVariable("id") id: UUID): ResponseEntity<ParcelResponse> = parcelService.getParcel(id)
+        .let {
+            it.toParcelResponse(
+                parcelService.getHandlingDepartment(it)
+            ).nullTo404()
+        }
 }
 
 private fun <A> A?.nullTo404() = this
@@ -40,7 +41,7 @@ private fun Parcel.toParcelResponse(handlingDepartment: Department?): ParcelResp
     houseNumber = this.receipient.address.houseNumber,
     postalCode = this.receipient.address.postalCode,
     city = this.receipient.address.city,
-    handlingDepartment = handlingDepartment!!
+    handlingDepartment = handlingDepartment!!.name
 )
 
 data class ParcelResponse(
@@ -53,5 +54,5 @@ data class ParcelResponse(
     val houseNumber: Int,
     val postalCode: String,
     val city: String,
-    val handlingDepartment: Department
+    val handlingDepartment: String
 )

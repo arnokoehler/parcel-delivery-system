@@ -12,7 +12,7 @@ class ParcelRepository {
 
     private val parcelWithReceipient = (ParcelTable leftJoin ReceipientTable)
 
-    fun insert(parcel: Parcel) {
+    fun insert(parcel: Parcel): Parcel {
         parcel.receipient?.let { insertReicpient(it) }
 
         ParcelTable.insert {
@@ -21,6 +21,7 @@ class ParcelRepository {
             it[weight] = parcel.weight
             it[value] = parcel.value
         }
+        return parcel
     }
 
     private fun insertReicpient(receipient: Receipient) {
@@ -71,4 +72,4 @@ private fun ResultRow.toParcel() = Parcel(
 
 class ReceipientNotFound(message: String) : Exception(message)
 
-class ParcelNotFoundException(message:String): Exception(message)
+class ParcelNotFoundException(message: String) : Exception(message)
