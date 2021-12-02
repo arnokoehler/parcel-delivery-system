@@ -35,7 +35,7 @@ internal class ParcelRepositoryIT {
             ))
         }
 
-        val parcel = parcelRepository.findBy(id)!!
+        val parcel = parcelRepository.findBy(id)
 
         assertThat(parcel.id).isEqualTo(id)
         assertThat(parcel.weight.toString()).isEqualTo("0.22")

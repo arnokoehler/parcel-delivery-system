@@ -5,10 +5,15 @@ import java.util.UUID
 
 data class Parcel(
     val id: UUID,
-    val receipient: Receipient?, // TODO fix repo so this can be always filled
+    val receipient: Receipient?,
     val weight: Float,
     val value: BigDecimal
-)
+) {
+    init {
+        require(weight > 0)
+        require(value > BigDecimal.ZERO)
+    }
+}
 
 data class Receipient(
     val id: UUID,
