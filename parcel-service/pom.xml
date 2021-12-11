@@ -15,6 +15,10 @@
         <exposed.version>0.36.1</exposed.version>
         <spring-boot.version>2.6.1</spring-boot.version>
         <jackson-module-kotlin.version>2.13.0</jackson-module-kotlin.version>
+        <flyway-core.version>8.0.2</flyway-core.version>
+        <slf4j-api.version>1.7.32</slf4j-api.version>
+        <logback-classic.version>1.2.7</logback-classic.version>
+        <kotlin-logging-jvm.version>2.0.10</kotlin-logging-jvm.version>
     </properties>
 
     <dependencies>
@@ -54,7 +58,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>8.0.2</version>
+            <version>${flyway-core.version}</version>
         </dependency>
 
         <dependency>
@@ -66,6 +70,27 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-common</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.microutils</groupId>
+            <artifactId>kotlin-logging-jvm</artifactId>
+            <version>${kotlin-logging-jvm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-classic.version}</version>
         </dependency>
 
         <dependency>

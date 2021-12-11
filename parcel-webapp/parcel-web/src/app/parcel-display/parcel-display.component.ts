@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ParcelService} from "./parcel.service";
+import {ParcelService} from "../parcel.service";
 
 @Component({
   selector: 'app-parcel-display',

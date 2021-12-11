@@ -1,9 +1,10 @@
-import {Receipient} from "./receipient";
-
 export interface Parcel {
     id: string;
     name: string;
-    receipient: Receipient,
     weight: number,
-    value: number
+    value: number,
+    street: string,
+    houseNumber: number,
+    postalCode: string,
+    city: string
 }

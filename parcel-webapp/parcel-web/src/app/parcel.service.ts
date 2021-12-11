@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import {ErrorHandlerService, HandleError} from "../error-handler.service";
-import {Parcel} from "./parcel";
+import {ErrorHandlerService, HandleError} from "./error-handler.service";
+import {Parcel} from "./parcel-display/parcel";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -16,7 +16,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ParcelService {
-  parcelUrl = 'api/heroes';
+  parcelUrl = 'api/parcels';
   private handleError: HandleError;
 
   constructor(
@@ -25,10 +25,10 @@ export class ParcelService {
     this.handleError = httpErrorHandler.createHandleError('ParcelService');
   }
 
-  getHeroes(): Observable<Parcel[]> {
+  getParcels(): Observable<Parcel[]> {
     return this.http.get<Parcel[]>(this.parcelUrl)
         .pipe(
-            catchError(this.handleError('getHeroes', []))
+            catchError(this.handleError('getParcels', []))
         );
   }
 }
