@@ -7,11 +7,13 @@ import { AppComponent } from './app.component';
 import { ParcelDisplayComponent } from './parcel-display/parcel-display.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {HttpClientModule} from "@angular/common/http";
+import { ParcelDetailComponent } from './parcel-display/parcel-detail/parcel-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ParcelDisplayComponent
+    ParcelDisplayComponent,
+    ParcelDetailComponent
   ],
   imports: [
     BrowserModule,

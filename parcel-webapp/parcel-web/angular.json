@@ -72,7 +72,8 @@
               "browserTarget": "parcel-web:build:production"
             },
             "development": {
-              "browserTarget": "parcel-web:build:development"
+              "browserTarget": "parcel-web:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
