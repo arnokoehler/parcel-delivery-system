@@ -1,0 +1,6 @@
+<h2>{{parcels}} {{parcels.length}} parcels</h2>
+
+<app-parcel-detail
+        *ngFor="let parcel of parcels"
+        [parcel]="parcel">
+</app-parcel-detail>

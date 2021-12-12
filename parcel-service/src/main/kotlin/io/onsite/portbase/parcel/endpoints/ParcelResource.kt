@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/v1/parcels/")
+@RequestMapping("/v1/parcels")
 class ParcelResource(
     private val parcelService: ParcelService
 ) {
+
+    @GetMapping("/")
+    fun getPayments(): List<ParcelResponse> = parcelService.getParcels()
+        .map { it.toParcelResponse(parcelService.getHandlingDepartment(it)) }
 
     @GetMapping("/{id}")
     fun getPayment(@PathVariable("id") id: UUID): ResponseEntity<ParcelResponse> = parcelService.getParcel(id)

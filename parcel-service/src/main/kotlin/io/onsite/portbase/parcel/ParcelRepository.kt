@@ -4,6 +4,7 @@ import java.util.UUID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,6 +25,28 @@ class ParcelRepository {
         return parcel
     }
 
+    @Transactional(readOnly = true)
+    fun findBy(id: UUID): Parcel {
+        val parcel = parcelWithReceipient.select {
+            ParcelTable.id eq id
+        }
+            .map(::mapParcelToReceipient)
+            .singleOrNull() ?: throw ParcelNotFoundException("Parcel not found")
+
+        return parcel
+    }
+
+    @Transactional(readOnly = true)
+    fun findAll(): List<Parcel> {
+        return parcelWithReceipient.selectAll()
+            .map(::mapParcelToReceipient)
+    }
+
+    private fun mapParcelToReceipient(it: ResultRow): Parcel {
+        val parcelWithoutReceipient = it.toParcel()
+        return parcelWithoutReceipient.copy(receipient = it.toReceipient())
+    }
+
     private fun insertReicpient(receipient: Receipient) {
         ReceipientTable.insert {
             it[name] = receipient.name
@@ -33,20 +56,6 @@ class ParcelRepository {
             it[postalCode] = receipient.address.postalCode
             it[city] = receipient.address.city
         }
-    }
-
-    @Transactional(readOnly = true)
-    fun findBy(id: UUID): Parcel {
-        val parcel = parcelWithReceipient.select {
-            ParcelTable.id eq id
-        }
-            .map {
-                val parcelWithoutReceipient = it.toParcel()
-                parcelWithoutReceipient.copy(receipient = it.toReceipient())
-            }
-            .singleOrNull() ?: throw ParcelNotFoundException("Parcel not found")
-
-        return parcel
     }
 }
 
